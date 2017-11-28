@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include "mkl.h"
 
 void gemm_bin(int M, int N, int K, float ALPHA, 
         char  *A, int lda, 
@@ -77,15 +78,18 @@ void gemm_nn(int M, int N, int K, float ALPHA,
         float *C, int ldc)
 {
     int i,j,k;
-    #pragma omp parallel for
-    for(i = 0; i < M; ++i){
-        for(k = 0; k < K; ++k){
-            register float A_PART = ALPHA*A[i*lda+k];
-            for(j = 0; j < N; ++j){
-                C[i*ldc+j] += A_PART*B[k*ldb+j];
-            }
-        }
-    }
+    printf("M: %d N: %d K: %d", M, N, K);
+    // #pragma omp parallel for
+    // for(i = 0; i < M; ++i){
+    //     for(k = 0; k < K; ++k){
+    //         register float A_PART = ALPHA*A[i*lda+k];
+    //         for(j = 0; j < N; ++j){
+    //             C[i*ldc+j] += A_PART*B[k*ldb+j];
+    //         }
+    //     }
+    // }
+    CBLAS_LAYOUT layout = CblasRowMajor;
+    cblas_sgemm(layout , CblasNoTrans, CblasNoTrans, M, N, K, ALPHA, A, lda, B, ldb, 1.0f, C, ldc);
 }
 
 void gemm_nt(int M, int N, int K, float ALPHA, 

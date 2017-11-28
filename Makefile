@@ -1,7 +1,7 @@
 GPU=0
 CUDNN=0
-OPENCV=0
-OPENMP=0
+OPENCV=1
+OPENMP=1
 DEBUG=0
 
 ARCH= -gencode arch=compute_30,code=sm_30 \
@@ -24,8 +24,8 @@ NVCC=nvcc
 AR=ar
 ARFLAGS=rcs
 OPTS=-Ofast
-LDFLAGS= -lm -pthread 
-COMMON= -Iinclude/ -Isrc/
+LDFLAGS= -L/storage/ronit/intel/lib/intel64_lin -L/storage/ronit/intel/mkl/lib/intel64_lin -L/storage/ronit/intel/lib -lm -pthread -L/storage/ronit/intel/mkl/lib/intel64/ -lmkl_intel_lp64 -lmkl_intel_thread -lmkl_core -liomp5 -lpthread
+COMMON= -Iinclude/ -Isrc/ -I/storage/ronit/intel/mkl/include/
 CFLAGS=-Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 
 ifeq ($(OPENMP), 1) 
