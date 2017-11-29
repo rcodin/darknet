@@ -766,3 +766,5 @@ size_t rand_size_t();
 float rand_normal();
 
 #endif
+
+void test_detector(char *datacfg, void *net_ptr, char *filename, float thresh, float hier_thresh, char *outfile, int fullscreen);
